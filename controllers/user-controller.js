@@ -1,5 +1,9 @@
 const { User } = require('../models');
 
+
+//**BONUS: Remove a user's associated thoughts when deleted.
+
+
 const userController = {
   // get all users: GET /api/users
   getAllUser(req, res) {
