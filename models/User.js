@@ -12,10 +12,8 @@ const UserSchema = new Schema(
       type: String,
       unique: true,
       required: true,
-      validate: {
-        validator: () => Promise.resolve(false),
-        message: 'Email validation failed'
-      }
+      // use REGEX to validate correct email
+      match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/]
     },
     // createdAt: {
     //     type: Date,
