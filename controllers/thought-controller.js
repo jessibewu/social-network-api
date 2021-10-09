@@ -91,26 +91,37 @@ const thoughtController = {
       { _id: params.thoughtId },
       { $push: { reactions: body } },
       { new: true, runValidators: true }
-    )
-      .then(dbUserData => {
-        if (!dbUserData) {
-          res.status(404).json({ message: 'No user found with this id!' });
+    ) 
+      .populate({
+        path: 'reactions', 
+        select: '-__v'
+      })
+      .select('-__v')
+      .then(dbThoughtsData  => {
+        if (!dbThoughtsData ) {
+          res.status(404).json({ message: 'No reactions found with this id!' });
           return;
         }
-        res.json(dbUserData);
+        res.json(dbThoughtsData );
       })
       .catch(err => res.json(err));
   },
 
   // remove reaction: pull and remove a reaction by the reaction's reactionId value
   removeReaction({ params }, res) {
-    Thought.findOneAndDelete(
+    Thought.findOneAndUpdate(
       { _id: params.thoughtId },
       { $pull: { reactions: { reactionId: params.reactionId } } },
       { new: true }
       )
-      .then(dbUserData => res.json(dbUserData))
-      .catch(err => res.json(err));
+      .then(dbThoughtsData => {
+        if (!dbThoughtsData) {
+            res.status(404).json({message: 'No thoughts with this id!'});
+            return;
+        }
+        res.json(dbThoughtsData);
+    })
+      .catch(err => res.status(400).json(err));
   }
 
 }
