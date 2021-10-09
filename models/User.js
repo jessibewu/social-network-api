@@ -15,11 +15,6 @@ const UserSchema = new Schema(
       // use REGEX to validate correct email
       match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/]
     },
-    // createdAt: {
-    //     type: Date,
-    //     default: Date.now,
-    //     get: (createdAtVal) => dateFormat(createdAtVal)
-    // },  
     thoughts: [
       {
         type: Schema.Types.ObjectId,
@@ -45,7 +40,7 @@ const UserSchema = new Schema(
 
 // Virtual: retrieves the length of the user's friends array field on query.
 UserSchema.virtual('friendCount').get(function() {
-  return this.friends.reduce((total, friend) => total + friend.length + 1, 0);
+  return this.friends.length;
 });
 
 // create the User model using the UserSchema
