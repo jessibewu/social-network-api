@@ -1,3 +1,4 @@
+// also import 'Types' to generate the same type of ObjectId() value for the custom reactionId field 
 const { Schema, model, Types } = require('mongoose');
 const moment = require('moment');
 
@@ -21,6 +22,12 @@ const ReactionSchema = new Schema(
         default: Date.now,
         // Moment: to format date/time
         get: (createdAtVal) => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
+    }
+  },
+  {
+    //tell schema that it can use getters
+    toJSON: {
+      getters: true
     }
   }
   );
@@ -60,8 +67,8 @@ ThoughtSchema.virtual('reactionCount').get(function() {
   return this.reactions.length;
 });
 
-// create the User model using the UserSchema
+// create the Thought model using the ThoughtSchema
 const Thought = model('Thought', ThoughtSchema);
 
-// export the User model
+// export the Thought model
 module.exports = Thought;

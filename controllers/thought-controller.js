@@ -74,24 +74,16 @@ const thoughtController = {
   // remove thought:
   deleteThought({ params }, res) {
       // delete the thought
-      Thought.findOneAndDelete({ _id: params.id })
-        .then(deletedThought  => {
-            if (!deletedThought) {
-              res.status(404).json({ message: 'No thought found with this id!' });
-              return;
+      Thought.findOneAndDelete({_id: params.id})
+        .then(dbThoughtsData => {
+            if (!dbThoughtsData) {
+                res.status(404).json({message: 'No thought with this particular id!'});
+                return;
             }
-            // delete the reference to deleted thought in user's thought array
-            User.findOneAndUpdate(
-              { username: dbThoughtData.username },
-              { $pull: { thoughts: params.id } }
-            )
-            .then(() => {
-                res.json({message: 'Successfully deleted the thought'});
+            res.json(dbThoughtsData);
             })
-            .catch(err => res.status(500).json(err));
-        })
-      .catch(err => res.status(500).json(err));
-  },
+            .catch(err => res.status(400).json(err));
+    },
 
   //** /api/thoughts/:thoughtId/reactions
   // add reaction: create a reaction stored in a single thought's reactions array field
