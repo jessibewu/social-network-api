@@ -1,4 +1,4 @@
-# Social Network Api
+# Social Network API
 
 ![badge](https://img.shields.io/badge/license-MIT-brightgreen)
 
